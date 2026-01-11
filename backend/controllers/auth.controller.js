@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-
+import { GenreateJWT } from "../middlewares/jwt.middleware.js";
 
 export const SignupMethod=async(req,res)=>{
     const{name,email,password}=req.body;
@@ -20,19 +20,33 @@ export const SignupMethod=async(req,res)=>{
 }
 
 export const LoginMethod = async(req,res)=>{
+    // console.log(req.body);
     const {email,password}=req.body;
     try{
-        const existing_user=await User.findOne({email:email});
-        if(existing_user && password==existing_user.password){
-            res.json({message:"logined"});
+        const existingUser = await User.findOne({email:email});
+        // console.log(existingUser);
+
+        if(existingUser && existingUser.password == password){
+            const payload={
+                _id:existingUser._id,
+                email:email
+            }
+            const jwt_token = Generate_JWT(payload);
+            // res.cookie("jwt",jwt_token,{
+            // httpOnly: true,                // prevents JS access to cookie
+            // secure: process.env.NODE_ENV === "production", // only HTTPS in prod
+            // sameSite: "strict"j
+            // });
+            // console.log(existingUser);
+            return res.status(200).json({ message: "True", token: jwt_token });
+            
         }
         else{
             return res.status(404).json({message:"Invalid email or password"});
         }
-
     }
-    catch(err){
-            console.error("Error during user sign up:", err.message);
-            res.status(500).json({ message: "Internal server error during sign up." });
-        }
+    catch(error){
+        console.error("Error during user sign up:", error.message);
+        res.status(500).json({ message: "Internal server error during sign up." });
+    }
 }
