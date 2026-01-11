@@ -31,7 +31,7 @@ export const LoginMethod = async(req,res)=>{
                 _id:existingUser._id,
                 email:email
             }
-            const jwt_token = Generate_JWT(payload);
+            const jwt_token = GenreateJWT(payload);
             // res.cookie("jwt",jwt_token,{
             // httpOnly: true,                // prevents JS access to cookie
             // secure: process.env.NODE_ENV === "production", // only HTTPS in prod
