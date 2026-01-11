@@ -1,9 +1,33 @@
 import mongoose from "mongoose";
-const userSchema = new mongoose.Schema
-({
-    name: String,
-    email: String,
-    password: String
+const userSchema = new mongoose.Schema({
+    name:{
+        type: String,
+        require:true,
+        trim:true,
+    },
+    email:{
+        type:String,
+        require:true,
+        unique: true,
+        lowercase: true,
+    },
+    password:{
+        type:String,
+        require:true,
+        select:false,
+    },
+    role:{
+        type:String,
+        enum:["User","Admin"],
+        default:"User",
+    },
+    avatar:{
+      type: String, // location of pfp.
+    },
+
+    phone:{
+      type: String,
+    },
 },
 {timestamps: true});
 

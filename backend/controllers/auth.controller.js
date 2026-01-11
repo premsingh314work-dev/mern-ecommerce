@@ -23,7 +23,7 @@ export const LoginMethod = async(req,res)=>{
     // console.log(req.body);
     const {email,password}=req.body;
     try{
-        const existingUser = await User.findOne({email:email});
+        const existingUser = await User.findOne({email:email}).select('+password');
         // console.log(existingUser);
 
         if(existingUser && existingUser.password == password){
