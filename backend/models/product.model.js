@@ -52,6 +52,20 @@ const productSchema = new mongoose.Schema({
 },
 { timestamps: true });
 
+productSchema.index(
+  { category: 1 },
+  { name: "idx_category" }
+);
+
+productSchema.index(
+  {
+    productName: "text",
+    description: "text",
+    category: "text"
+  },
+  { name: "idx_product_search" }
+);
+
 
 const productModel = mongoose.model('Product', productSchema);
 

@@ -2,8 +2,28 @@ import productModel from "../models/product.model.js";
 
 export const Get_Products=async (req,res)=>{
     try{
-        const products= await productModel.find();
-        res.json(products);
+        const {search,limit,category} = req.query;
+        // console.log("limit:",limit, " ","search:",search," ","category",category);
+
+
+        const filter={};
+        const sort = {};
+
+        if (search) {
+            filter.$text ={$search: search};
+            sort.score={$meta:"textScore"};
+            // filter.$or = [{ productName: { $regex: search, $options: "i" } },{ category: { $regex: search, $options: "i" } }];
+        }
+        if(category){
+            filter.category = category;
+        }
+        // console.log(JSON.stringify(filter));
+        // console.log(JSON.stringify(sort));
+        
+        
+        
+        const products= await productModel.find(filter, search ? { score: { $meta: "textScore" } } : {}).limit(limit).sort(sort).limit(Number(limit) || 10);
+        res.json({productsList:products});
     }catch(err){
         res.json({message:err});
     }
