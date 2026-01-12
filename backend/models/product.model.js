@@ -22,12 +22,9 @@ const productSchema = new mongoose.Schema({
         min: [0, 'Price cannot be negative']
     },
     category: {
-        type: String,
-        required: [true, 'Please select a category'],
-        enum: {
-            values: ['Electronics', 'Cameras', 'Laptops', 'Accessories'], 
-            message: 'Please select correct category'
-        }
+        type: [String],
+        required: true,
+        index: true   
     },
     stock: {
         type: Number,

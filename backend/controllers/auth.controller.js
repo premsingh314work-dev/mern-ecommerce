@@ -29,14 +29,15 @@ export const LoginMethod = async(req,res)=>{
         if(existingUser && existingUser.password == password){
             const payload={
                 _id:existingUser._id,
-                email:email
+                email:email,
+                role:existingUser.role
             }
             const jwt_token = GenreateJWT(payload);
-            // res.cookie("jwt",jwt_token,{
-            // httpOnly: true,                // prevents JS access to cookie
-            // secure: process.env.NODE_ENV === "production", // only HTTPS in prod
-            // sameSite: "strict"j
-            // });
+            res.cookie("jwt",jwt_token,{
+            httpOnly: true,                // prevents JS access to cookie
+            secure: process.env.NODE_ENV === "production", // only HTTPS in prod
+            sameSite: "strict"
+            });
             // console.log(existingUser);
             return res.status(200).json({ message: "True", token: jwt_token });
             

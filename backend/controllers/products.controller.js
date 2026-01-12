@@ -1,6 +1,5 @@
 import productModel from "../models/product.model.js";
 
-
 export const Get_Products=async (req,res)=>{
     try{
         const products= await productModel.find();
@@ -12,10 +11,12 @@ export const Get_Products=async (req,res)=>{
 
 export const Post_Products=async (req,res)=>{
     try{
-        const {seller,productName,price,description,category,stock} = req.body;
-        const newProduct = new productModel({seller,productName,price,description,category,stock});
+        const seller_id = req.user._id;
+        // console.log("seller_id:" ,seller_id);
+        const {productName,price,description,category,stock} = req.body;
+        const newProduct = new productModel({seller:seller_id,productName,price,description,category,stock});
         await newProduct.save();
-        res.status(201).json({message:"Product has been created"});
+        res.status(201).json({message:"Product has been created",product:newProduct});
     }
     catch(err){
         res.json({message:err});
