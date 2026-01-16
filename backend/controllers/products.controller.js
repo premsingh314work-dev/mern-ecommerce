@@ -2,9 +2,12 @@ import productModel from "../models/product.model.js";
 
 export const Get_Products=async (req,res)=>{
     try{
-        const {search,limit,category} = req.query;
-        // console.log("limit:",limit, " ","search:",search," ","category",category);
-
+        let {search,limit,category,page} = req.query;
+        if(Number(page)<=0) {page=1};
+        
+        
+        const skip = ((page?page:1 )-1)*(limit?limit:10);
+        console.log(page,limit,skip);
 
         const filter={};
         const sort = {};
@@ -20,9 +23,9 @@ export const Get_Products=async (req,res)=>{
         // console.log(JSON.stringify(filter));
         // console.log(JSON.stringify(sort));
         
+        const projection = search ? { score: { $meta: "textScore" } } : {};
         
-        
-        const products= await productModel.find(filter, search ? { score: { $meta: "textScore" } } : {}).limit(limit).sort(sort).limit(Number(limit) || 10);
+        const products= await productModel .find(filter, projection).skip(skip).limit(Number(limit)|| 10).sort(sort); 
         res.json({productsList:products});
     }catch(err){
         res.json({message:err});

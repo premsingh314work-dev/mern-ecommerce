@@ -7,3 +7,14 @@ export const isAdmin = (req, res, next) => {
   }
   next();
 };
+
+export const isUser = (req, res, next) => {
+  if (req.user.role !== "User") {
+    return res.status(403).json({
+      message: "You are not authorized to perform this action"
+    });
+  }
+  next();
+};
+
+

@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import ProductRouter from "./routers/products.router.js";
 
+import CartRouter from "./routers/cart.route.js";
+
 dotenv.config();
 
 
@@ -14,6 +16,7 @@ const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
+app.use("/cart",CartRouter);
 app.use('/auth',Authrouter);
 app.use('/api',ProductRouter);
 
