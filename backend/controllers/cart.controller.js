@@ -32,3 +32,13 @@ export const AddtoCart = async (req, res) => {
     console.log(err);
   }
 };
+
+export const Get_Cart = async(req,res)=>{
+  const userId= req.user._id;
+  let cart= await cartModel.findOne({userId});
+  if(!cart)[
+    res.json({message:"Cart is empty", cart:{}})
+  ]
+  res.json({message:`Cart of user ${userId}`, cart})
+
+}

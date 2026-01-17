@@ -10,15 +10,14 @@ import CartRouter from "./routers/cart.route.js";
 dotenv.config();
 
 
-
 const PORT = 3000;
 const app = express();
 
 app.use(cookieParser());
 app.use(express.json());
-app.use("/cart",CartRouter);
-app.use('/auth',Authrouter);
-app.use('/api',ProductRouter);
+app.use("/api/cart",CartRouter);
+app.use("/api/auth",Authrouter);
+app.use("/api/products",ProductRouter);
 
 app.get('/',(req,res)=>{
     res.send("Hi");
