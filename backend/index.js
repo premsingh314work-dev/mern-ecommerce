@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import Authrouter from "./routers/auth.route.js";
 import {connectDB} from './lib/db.js';
 import dotenv from "dotenv";
@@ -13,6 +14,14 @@ dotenv.config();
 const PORT = 3000;
 const app = express();
 
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use("/api/cart",CartRouter);
