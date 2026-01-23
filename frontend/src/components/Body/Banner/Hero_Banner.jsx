@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Banner_images } from "./Banner.data.js";
+import { Banner_images } from "../../../data/Banner.data";
 
 function Hero_Banner() {
 
@@ -16,7 +16,7 @@ function Hero_Banner() {
       stopSlider();
       interval = setInterval(() => {
         setBannerIndex((prev) => (prev + 1) % Banner_images.length);
-      }, 10000);
+      }, 5000);
     };
 
     const handleVisibilityChange = () => {

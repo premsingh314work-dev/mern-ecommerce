@@ -1,20 +1,28 @@
 import { useState, useEffect } from "react";
 import Hero_Banner from "./Banner/Hero_Banner";
 import Category_List from "./Catergory/Category";
+import BestSeller from "./LandingPageComps/BestSeller";
+import RecentlyViewed from "./LandingPageComps/RecentlyViewed";
+// import ScrollableDiv from "../Universal/Scrollable_div";
 
 function Body() {
   return (
     <>
-      <div className="p-2 pr-5">
-        <Hero_Banner />
-        <Category_List />
-
-      <div className="bg-violet-400 h-[40vh]">
-        <div className="h-">
-
+      <div className="p-2 pr-5 gap-5 flex flex-col bg-gray-100">
+        <div>
+          <Hero_Banner />
+          <Category_List />
         </div>
-      </div>
 
+        <div className="h-auto p-1">
+          <BestSeller/> 
+          <RecentlyViewed/>
+          <>
+            <div className="text-center p-10">
+              <h1 className="text-7xl font-semibold ">FOOTER AEGA YAHA</h1>
+            </div>
+          </>
+        </div>
       </div>
     </>
   );

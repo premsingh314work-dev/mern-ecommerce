@@ -1,36 +1,60 @@
-import React, { useState } from "react";
-import {
-  Search,
-  ShoppingCart,
-  CircleUserRound,
-  Menu,
-  X,
-} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [Searched_Item, setSearched_Item] = useState("");
+  const [Loading, setLoading] = useState(false);
+  const [Error, setError] = useState(null);
+
+  const SearchClick = async () => {
+    if (Searched_Item == "") return;
+    setLoading(true);
+    setError(null);
+    try {
+      const result = await axios.get(
+        `http://localhost:3000/api/products?search=${Searched_Item}`,
+      );
+      console.log(result);
+    } catch (err) {
+      setError("Failed to fetch data");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // useEffect(()=>{
+  //   console.log(Searched_Item);
+  // },[Searched_Item])
 
   return (
     <>
-   
       <nav className="h-16 flex items-center justify-between px-7 shadow-md">
-
         <div className="text-2xl font-bold">
           Smart <span className="text-red-600">Shop</span>
         </div>
 
-
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={(e) => {e.preventDefault();SearchClick();}}
           className="hidden md:flex items-center bg-gray-200 rounded-full w-[40vw]
                      focus-within:ring-2 focus-within:ring-gray-400 transition"
         >
           <input
             type="text"
             placeholder="Search items"
+            value={Searched_Item}
+            onChange={(e) => {
+              setSearched_Item(e.target.value);
+            }}
             className="grow px-4 py-2 bg-transparent focus:outline-none"
           />
-          <button className="p-2 hover:bg-gray-300 rounded-full">
+          <button
+            type="submit"
+            className="p-2 hover:bg-gray-300 rounded-full"
+            // onClick={SearchClick}
+          >
             <Search />
           </button>
         </form>
