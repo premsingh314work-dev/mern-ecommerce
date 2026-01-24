@@ -1,52 +1,39 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+import { useNavigate, useLocation ,Link} from "react-router-dom";
 import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 
-function Navbar() {
+function Navbar({ onSearch = () => {} }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [Searched_Item, setSearched_Item] = useState("");
-  const [Loading, setLoading] = useState(false);
-  const [Error, setError] = useState(null);
+  const [value, setValue] = useState("");
 
-  const SearchClick = async () => {
-    if (Searched_Item == "") return;
-    setLoading(true);
-    setError(null);
-    try {
-      const result = await axios.get(
-        `http://localhost:3000/api/products?search=${Searched_Item}`,
-      );
-      console.log(result);
-    } catch (err) {
-      setError("Failed to fetch data");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!value.trim()) return;
+
+    console.log("SEARCH SENT:", value);
+    navigate(`/products?search=${encodeURIComponent(value)}`);
   };
-
-  // useEffect(()=>{
-  //   console.log(Searched_Item);
-  // },[Searched_Item])
-
   return (
     <>
       <nav className="h-16 flex items-center justify-between px-7 shadow-md">
-        <div className="text-2xl font-bold">
+        <Link to="/"className="text-2xl font-bold cursor-pointer">
           Smart <span className="text-red-600">Shop</span>
-        </div>
+        </Link>
 
         <form
-          onSubmit={(e) => {e.preventDefault();SearchClick();}}
+          onSubmit={handleSubmit}
           className="hidden md:flex items-center bg-gray-200 rounded-full w-[40vw]
                      focus-within:ring-2 focus-within:ring-gray-400 transition"
         >
           <input
             type="text"
             placeholder="Search items"
-            value={Searched_Item}
+            value={value}
             onChange={(e) => {
-              setSearched_Item(e.target.value);
+              setValue(e.target.value);
             }}
             className="grow px-4 py-2 bg-transparent focus:outline-none"
           />
@@ -82,35 +69,6 @@ function Navbar() {
           </button>
         </div>
       </nav>
-
-      {/* Mobile Search */}
-      <div className="md:hidden px-4 mt-2">
-        <form
-          onSubmit={(e) => e.preventDefault()}
-          className="flex items-center bg-gray-200 rounded-full"
-        >
-          <input
-            type="text"
-            placeholder="Search items"
-            className="grow px-4 py-2 bg-transparent focus:outline-none"
-          />
-          <button className="p-2">
-            <Search />
-          </button>
-        </form>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-white shadow-md px-4 py-4 space-y-4 font-semibold">
-          <div className="hover:text-gray-600 cursor-pointer">Support</div>
-          <div className="hover:text-gray-600 cursor-pointer">Wallet</div>
-          <div className="flex items-center gap-2 hover:text-gray-600 cursor-pointer">
-            <CircleUserRound size={24} />
-            <span>Sign-in</span>
-          </div>
-        </div>
-      )}
     </>
   );
 }

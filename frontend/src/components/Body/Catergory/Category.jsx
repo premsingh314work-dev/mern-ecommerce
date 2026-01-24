@@ -16,7 +16,7 @@ function Category_List() {
       <div className="w-full overflow-x-auto  ">
         <div className="flex flex-nowrap">
           {CategoryListData.map((elem,index)=>{
-              return <CardCategory Key={index} categoryName={elem.CategoryName} img={elem.src}  />
+              return <CardCategory key={index} categoryName={elem.CategoryName} img={elem.src}  />
           })}
         </div>
       </div>
