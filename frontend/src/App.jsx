@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import ProductPage from "./components/Body/ProductPage";
+import ProductPage from "./components/Body/ProductPage/ProductPage";
 import "./App.css";
 import Navbar from "./components/Navbar/Navbar";
 import Body from "./components/Body/Body";
