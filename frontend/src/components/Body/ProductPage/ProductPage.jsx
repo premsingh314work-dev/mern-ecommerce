@@ -13,15 +13,13 @@ function ProductPage() {
 
   useEffect(() => {
     if (!searchQuery) return;
-    console.log("SEARCH RECEIVED:", searchQuery);
-
     const fetchProducts = async () => {
       setLoading(true);
       try {
         const res = await axios.get(
           `http://localhost:3000/api/products?search=${searchQuery}`,
         );
-        setProducts(res.data.productsList || []);
+        setProducts(res.data.productsList || []);        
       } catch (err) {
         setError("Failed to fetch products");
       } finally {
@@ -69,14 +67,8 @@ function ProductPage() {
               <span className="text-xl font-semibold">Results</span>
               <span>Check each product page for other buying options.</span>
             </h2>
-            {/* <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct />
-            <CardProduct /> */}
-            {products.map((product,index)=>{
-              return <CardProduct/>
+            {products.map((product,index)=>{                
+              return <CardProduct key={index} productName={product.productName} rating={product.ratings} price={product.price}/>
             })}
           </div>
         </div>

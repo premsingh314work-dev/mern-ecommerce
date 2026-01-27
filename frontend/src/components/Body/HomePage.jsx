@@ -5,10 +5,11 @@ import BestSeller from "./LandingPageComps/BestSeller";
 import RecentlyViewed from "./LandingPageComps/RecentlyViewed";
 // import ScrollableDiv from "../Universal/Scrollable_div";
 
-function Body() {
+function HomePage() {
+    console.log("RENDER: HomePage");
   return (
     <>
-      <div className="p-2 pr-5 gap-5 flex flex-col bg-gray-100">
+      <div className="p-2 gap-5 flex flex-col bg-gray-100">
         <div>
           <Hero_Banner />
           <Category_List />
@@ -28,4 +29,4 @@ function Body() {
   );
 }
 
-export default Body;
+export default HomePage;

@@ -2,7 +2,9 @@ import { useState } from "react";
 import { useNavigate, useLocation ,Link} from "react-router-dom";
 import { Search, ShoppingCart, CircleUserRound, Menu, X } from "lucide-react";
 
-function Navbar({ onSearch = () => {} }) {
+function Navbar() {
+  console.log("RENDER: Navbar");
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [value, setValue] = useState("");
 
@@ -19,7 +21,7 @@ function Navbar({ onSearch = () => {} }) {
   return (
     <>
       <nav className="h-16 flex items-center justify-between px-7 shadow-md">
-        <Link to="/"className="text-2xl font-bold cursor-pointer">
+        <Link to="/" className="text-2xl font-bold cursor-pointer">
           Smart <span className="text-red-600">Shop</span>
         </Link>
 
@@ -54,11 +56,12 @@ function Navbar({ onSearch = () => {} }) {
           <button className="hover:scale-110 transition">
             <ShoppingCart size={28} />
           </button>
-
+          <Link to='/signup'>
           <button className="flex items-center gap-2 hover:text-gray-600">
             <CircleUserRound size={28} />
             <span>Sign-in</span>
           </button>
+          </Link>
         </div>
 
         {/* Mobile Icons */}

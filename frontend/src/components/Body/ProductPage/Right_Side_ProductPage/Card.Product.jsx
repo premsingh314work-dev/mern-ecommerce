@@ -1,17 +1,19 @@
 import React from "react";
 import ProductImage from ".//ProductImage";
 import ProductDetail from "./ProductDetail";
-function CardProduct() {
+function CardProduct(props) {
+  console.log("Render: CardProduct");
+  
   return (
     <>
-      <div className=" h-fit w-full m-1 bg-gray-500 rounded-lg flex flex-row">
+      <div className=" h-auto w-full m-1 bg-gray-100 rounded-lg flex flex-row">
         {/* img div */}
-        <div className=" bg-red-500 flex-1 ">
+        <div className=" bg-red-500 aspect-square w-60 shrink-0 ">
           <ProductImage />
         </div>
         {/* product detail div */}
-        <div className="bg-pink-400 flex-3 p-3 flex flex-col justify-between">
-          <ProductDetail />
+        <div className="flex-3 p-3 flex flex-col justify-between">
+          <ProductDetail productName={props.productName} rating={props.rating} price={props.price}/>
         </div>
       </div>
     </>
