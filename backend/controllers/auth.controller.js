@@ -2,20 +2,20 @@ import User from "../models/user.model.js";
 import { GenreateJWT } from "../middlewares/jwt.middleware.js";
 
 export const SignupMethod=async(req,res)=>{
-    const{name,email,password}=req.body;
+    const{name,email,password,avatar,phone}=req.body;
         try{
             const existing_user = await User.findOne({email:email});
             if(existing_user){
                 console.log(existing_user);
                 return res.status(409).json({message:"User already exists"});
             }
-            const new_user=new User({name,email,password});
+            const new_user=new User({name,email,password,avatar,phone});
             await new_user.save();
             res.status(201).json({message:"User created"})
         }
         catch(err){
             console.error("Error during user sign up:", err.message);
-            res.status(500).json({ message: "Internal server error during sign up." });
+            res.status(500).json({ message: err.message});
         }
 }
 
