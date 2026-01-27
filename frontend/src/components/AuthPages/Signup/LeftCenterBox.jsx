@@ -66,22 +66,23 @@ function LeftCenterBox() {
 
   const handleCreateAccount = async () => {
     try {
-      console.log("Sending data to backend...", formData);
       const response = await axios.post(
         `${Backend_url}/api/auth/signup`,
         formData,
         {
+          withCredentials: true,
           headers: {
             "Content-Type": "application/json",
           },
         },
       );
-      if (response.status === 201 || response.status === 200) {
-        alert("Account Created Successfully!");
-        console.log("Backend Response:", response.data);
+      if (response.status === 201) {
 
+        console.log("Backend Response:", response.data);
+        
+        alert("Account Created Successfully! Redirecting...");
         // Redirect user to login or dashboard
-        window.location.href = "/login";
+        window.location.href = "/";
       }
     } catch (error) {
       // Handle Errors (Validation errors, server down, etc.)
