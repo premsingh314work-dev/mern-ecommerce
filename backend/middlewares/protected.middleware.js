@@ -14,7 +14,9 @@ export const protect = (req, res, next) => {
     req.user = {
       _id: decoded._id,
       role: decoded.role,
-      email: decoded.email
+      email: decoded.email,
+      name: decoded.name,
+      avatar: decoded.avatar, // optional
     };
 
     next();

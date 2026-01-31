@@ -5,6 +5,8 @@ import "./App.css";
 import MainLayout from "./components/Body/MainLayout";
 import HomePage from "./components/Body/HomePage"; 
 import SignUpPage from "./components/AuthPages/Signup/SignUpPage";
+import LoginPage from "./components/AuthPages/Login/LoginPage"
+import SingleProduct from "./components/Body/SingleProduct/SingleProduct";
 
 function App() {
   return (
@@ -14,10 +16,11 @@ function App() {
             <Route element={<MainLayout />}>
               <Route path="/" element={<HomePage />} />
               <Route path="/products" element={<ProductPage />} />
-              <Route path="/products/:id" element={<ProductPage />} />
+              <Route path="/products/:prodid" element={<SingleProduct />} />
             </Route>
 
             <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/login" element={<LoginPage />} />
           </Routes>
 
     </BrowserRouter>

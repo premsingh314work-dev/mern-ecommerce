@@ -2,7 +2,7 @@ import React from "react";
 
 function StepIndicatorComp({ steps, currentStep }) {
   return (
-    <div className="w-full h-20 flex items-center justify-between px-3">
+    <div className="w-full h-20 flex items-center justify-center gap-1 px-3">
       {steps.map((stepName, index) => (
         <div
           key={stepName}

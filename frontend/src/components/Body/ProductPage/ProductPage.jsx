@@ -4,12 +4,15 @@ import { useSearchParams } from "react-router-dom";
 
 import CardProduct from "./Right_Side_ProductPage/Card.Product";
 function ProductPage() {
+  const Backend_url = import.meta.env.VITE_BACKEND_URL;
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
+  console.log(searchParams);
+  
 
   useEffect(() => {
     if (!searchQuery) return;
@@ -17,7 +20,7 @@ function ProductPage() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `http://localhost:3000/api/products?search=${searchQuery}`,
+          `${Backend_url}/api/products?search=${searchQuery}`,
         );
         setProducts(res.data.productsList || []);        
       } catch (err) {

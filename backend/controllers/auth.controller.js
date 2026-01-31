@@ -16,19 +16,21 @@ export const SignupMethod = async (req, res) => {
       _id: new_user._id,
       email: new_user.email,
       role: new_user.role || "User",
+      avatar: new_user.avatar,
+      name: new_user.name,
     };
 
-      const jwt_token = GenreateJWT(payload);
-      
-      res.cookie("jwt", jwt_token, {
-        httpOnly: true, // prevents JS access to cookie
-        secure: process.env.NODE_ENV === "production", // only HTTPS in prod
-        sameSite: "strict",
-        maxAge: 24 * 60 * 60 * 1000,
-      });
-    res.status(201).json({ 
-        message: "User created and Logged in!",
-     });
+    const jwt_token = GenreateJWT(payload);
+
+    res.cookie("jwt", jwt_token, {
+      httpOnly: true, // prevents JS access to cookie
+      secure: process.env.NODE_ENV === "production", // only HTTPS in prod
+      sameSite: "strict",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    res.status(201).json({
+      message: "User created and Logged in!",
+    });
   } catch (err) {
     console.error("Error during user sign up:", err.message);
     res.status(500).json({ message: err.message });
@@ -47,8 +49,10 @@ export const LoginMethod = async (req, res) => {
     if (existingUser && existingUser.password == password) {
       const payload = {
         _id: existingUser._id,
-        email: email,
+        email: existingUser.email,
         role: existingUser.role,
+        avatar: existingUser.avatar,
+        name: existingUser.name,
       };
       const jwt_token = GenreateJWT(payload);
       res.cookie("jwt", jwt_token, {

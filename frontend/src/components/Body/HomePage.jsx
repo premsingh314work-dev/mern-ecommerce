@@ -6,7 +6,6 @@ import RecentlyViewed from "./LandingPageComps/RecentlyViewed";
 // import ScrollableDiv from "../Universal/Scrollable_div";
 
 function HomePage() {
-    console.log("RENDER: HomePage");
   return (
     <>
       <div className="p-2 gap-5 flex flex-col bg-gray-100">

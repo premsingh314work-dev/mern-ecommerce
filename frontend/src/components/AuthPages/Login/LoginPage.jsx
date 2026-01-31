@@ -1,12 +1,12 @@
 // SignUpPage.jsx
 import AuthLayout from "../AuthLayout";
-import LeftCenterBox from "./LeftCenterBox";
-import SignUpImage from "../../../assets/AuthImages/SignUpImage.png";
+import LeftCenterBoxLogin from "./LeftCenterBox_login";
+import SignUpImage from "../../../assets/AuthImages/SignUpImage.png"
 
 function SignUpPage() {
   return (
     <AuthLayout sideImage={SignUpImage}>
-      <LeftCenterBox />
+      <LeftCenterBoxLogin />
     </AuthLayout>
   );
 }
