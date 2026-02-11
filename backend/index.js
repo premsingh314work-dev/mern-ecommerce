@@ -7,6 +7,9 @@ import cookieParser from 'cookie-parser';
 import ProductRouter from "./routers/products.router.js";
 import MeRouter from "./routers/me.router.js";
 import CartRouter from "./routers/cart.route.js";
+import dns from 'node:dns/promises';
+
+dns.setServers(['8.8.8.8','1.1.1.1']);
 
 
 dotenv.config();

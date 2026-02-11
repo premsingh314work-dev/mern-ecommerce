@@ -25,7 +25,6 @@ export const SignupMethod = async (req, res) => {
     res.cookie("jwt", jwt_token, {
       httpOnly: true, // prevents JS access to cookie
       secure: process.env.NODE_ENV === "production", // only HTTPS in prod
-      sameSite: "strict",
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(201).json({
@@ -57,8 +56,8 @@ export const LoginMethod = async (req, res) => {
       const jwt_token = GenreateJWT(payload);
       res.cookie("jwt", jwt_token, {
         httpOnly: true, // prevents JS access to cookie
-        secure: process.env.NODE_ENV === "production", // only HTTPS in prod
-        sameSite: "strict",
+        secure: process.env.NODE_ENV === "production", // only HTTPS in prods
+        maxAge: 24 * 60 * 60 * 1000,
       });
       // console.log(existingUser);
       return res.status(200).json({ message: "True", token: jwt_token });

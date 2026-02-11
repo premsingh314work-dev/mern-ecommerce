@@ -24,14 +24,21 @@ export const Get_Products = async (req, res) => {
 
     const projection = search ? { score: { $meta: "textScore" } } : {};
 
-    let products = await productModel
-      .find(filter, projection)
+    let products = await productModel.find()
+      .find(filter, projection)  
       .skip(skip)
       .limit(Number(limit) || 10)
       .sort(sort);
-    res.json({ productsList: products });
+    res.json({
+      productsList: products,
+      page,
+      limit,
+    });
   } catch (err) {
-    res.json({ message: err });
+    res.status(500).json({
+      message: "Failed to fetch products",
+      error: err.message,
+    });
   }
 };
 
