@@ -16,8 +16,12 @@ function Navbar() {
     e.preventDefault();
     if (!value.trim()) return;
     navigate(`/products?search=${encodeURIComponent(value)}`);
+    // console.log(value);
+    
   };
 
+  // console.log(user);
+  
   return (
     <nav className="h-16 flex items-center justify-between px-7 shadow-md">
       <Link to="/" className="text-2xl font-bold">
@@ -78,18 +82,33 @@ function Navbar() {
                   >
                     Settings
                   </Link>
+                  { (user.role=='Seller')?(
+
+                    <Link
+                      to="/sellerdashboard"
+                      className="block px-4 py-2 hover:bg-gray-100"
+                      onClick={() => setOpen(false)}
+                      >
+                      Dashboard
+                    </Link>
+                  ):(<></>)
+                  }
 
                   <button
                     onClick={async () => {
                       console.log("Logiut-clicked");
-                      
-                      await axios.post(
-                        `${Backend_url}/api/auth/logout`,
-                        {},
-                        { withCredentials: true }
-                      );
-                      setUser(null);
-                      setOpen(false);
+                      try{
+                        await axios.post(
+                          `${Backend_url}/api/auth/logout`,
+                          {},
+                          { withCredentials: true }
+                        );
+                        setUser(null);
+                        setOpen(false);
+                      }catch(err){
+                        console.log(err);
+                        
+                      }
                     }}
                     className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 cursor-pointer"
                   >

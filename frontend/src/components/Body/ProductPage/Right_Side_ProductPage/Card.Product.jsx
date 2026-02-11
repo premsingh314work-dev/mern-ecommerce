@@ -1,8 +1,8 @@
-import React from "react";
+import React,{memo} from "react";
 import ProductImage from ".//ProductImage";
 import ProductDetail from "./ProductDetail";
 function CardProduct(props) {
-  console.log("Render: CardProduct");
+  console.log("Render: CardProduct",props.productName);
   
   return (
     <>
@@ -20,4 +20,4 @@ function CardProduct(props) {
   );
 }
 
-export default CardProduct;
+export default React.memo(CardProduct);

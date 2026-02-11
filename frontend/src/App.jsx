@@ -7,6 +7,7 @@ import HomePage from "./components/Body/HomePage";
 import SignUpPage from "./components/AuthPages/Signup/SignUpPage";
 import LoginPage from "./components/AuthPages/Login/LoginPage"
 import SingleProduct from "./components/Body/SingleProduct/SingleProduct";
+import SellerDashboard from "./components/Body/SellerDashboar_Page/SellerDashboard";
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
 
             <Route path="/signup" element={<SignUpPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/sellerdashboard" element={<SellerDashboard/>} />
+            <Route path="/admindashboard" element={<> </>} />
           </Routes>
 
     </BrowserRouter>

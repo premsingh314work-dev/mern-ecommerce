@@ -11,7 +11,7 @@ function ProductPage() {
 
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
-  console.log(searchParams);
+  // console.log(searchQuery);
   
 
   useEffect(() => {
@@ -22,6 +22,8 @@ function ProductPage() {
         const res = await axios.get(
           `${Backend_url}/api/products?search=${searchQuery}`,
         );
+        // console.log(res);
+        
         setProducts(res.data.productsList || []);        
       } catch (err) {
         setError("Failed to fetch products");
@@ -63,7 +65,6 @@ function ProductPage() {
           <>
             <div className="h-full w-[17%] bg-fuchsia-400">hi</div>
           </>
-
           {/* products display div */}
           <div className="h-auto pr-2 p-1 w-full flex flex-col">
             <h2 className="flex flex-col p-1">
@@ -71,9 +72,10 @@ function ProductPage() {
               <span>Check each product page for other buying options.</span>
             </h2>
             {products.map((product,index)=>{                
-              return <CardProduct key={index} productName={product.productName} rating={product.ratings} price={product.price}/>
+              return <CardProduct key={product._id} productName={product.productName} rating={product.ratings} price={product.price}/>
             })}
           </div>
+          
         </div>
       </div>
     </>

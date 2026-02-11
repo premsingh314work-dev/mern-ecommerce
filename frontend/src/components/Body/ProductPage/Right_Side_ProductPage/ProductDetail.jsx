@@ -1,4 +1,4 @@
-import React from "react";
+import React,{memo} from "react";
 import { Star,IndianRupee } from "lucide-react";
 function ProductDetail(props) {
     console.log("Render: ProductDetail");
@@ -40,4 +40,4 @@ function ProductDetail(props) {
   );
 }
 
-export default ProductDetail;
+export default React.memo(ProductDetail);
