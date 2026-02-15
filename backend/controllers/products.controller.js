@@ -24,8 +24,9 @@ export const Get_Products = async (req, res) => {
 
     const projection = search ? { score: { $meta: "textScore" } } : {};
 
-    let products = await productModel.find()
-      .find(filter, projection)  
+    let products = await productModel
+      .find()
+      .find(filter, projection)
       .skip(skip)
       .limit(Number(limit) || 10)
       .sort(sort);
@@ -67,22 +68,40 @@ export const Get_singleProduct = async (req, res) => {
 
 export const Post_Products = async (req, res) => {
   try {
+    console.log("Post request hited");
+
     const seller_id = req.user._id;
     // console.log("seller_id:" ,seller_id);
-    const { productName, price, description, category, stock } = req.body;
+    const {
+      productName,
+      price,
+      description,
+      modelNo,
+      category,
+      stock,
+      images,
+    } = req.body;
     const newProduct = new productModel({
       seller: seller_id,
       productName,
+      modelNo,
       price,
       description,
       category,
       stock,
+      images,
     });
     await newProduct.save();
+    console.log(newProduct);
+
     res
       .status(201)
       .json({ message: "Product has been created", product: newProduct });
   } catch (err) {
-    res.json({ message: err });
+    console.log("Mongoose Error:", err);
+    res.status(400).json({
+      message: "Validation Failed",
+      error: err.message,
+    });
   }
 };
