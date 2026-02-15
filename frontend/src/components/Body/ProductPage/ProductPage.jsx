@@ -72,7 +72,7 @@ function ProductPage() {
               <span>Check each product page for other buying options.</span>
             </h2>
             {products.map((product,index)=>{                
-              return <CardProduct key={product._id} productName={product.productName} rating={product.ratings} price={product.price}/>
+              return <CardProduct key={product._id} product={product}/>
             })}
           </div>
           

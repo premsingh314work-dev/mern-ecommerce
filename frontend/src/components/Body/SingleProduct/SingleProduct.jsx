@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams ,useLocation} from "react-router-dom";
 import axios from "axios";
 
 function SingleProduct() {
+  const location = useLocation();
   const { prodid } = useParams();
-  const [product, setProduct] = useState(null);
+  
+  const [product, setProduct] = useState(location.state?.product || null);
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
-
+  
   useEffect(() => {
+    if(!product) console.log("Product is not present before fetch");
+    if(product) return;
+    
     if (!prodid) return;
 
     const fetchProduct = async () => {
@@ -15,7 +20,7 @@ function SingleProduct() {
         const res = await axios.get(
           `${Backend_url}/api/products/${prodid}`
         );
-        console.log(res);
+        // console.log(res);
         
         setProduct(res.data.product);
       } catch (err) {
@@ -24,7 +29,9 @@ function SingleProduct() {
     };
 
     fetchProduct();
-  }, [prodid]);
+    console.log(product);
+    
+  }, [prodid,product]);
 
   // if (!product) return <div>Loading...</div>;
 

@@ -1,7 +1,7 @@
 import React,{memo} from "react";
 import { Star,IndianRupee } from "lucide-react";
 function ProductDetail(props) {
-    console.log("Render: ProductDetail");
+    // console.log("Render: ProductDetail");
 
   return (
     <>

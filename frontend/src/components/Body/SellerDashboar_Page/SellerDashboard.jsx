@@ -1,11 +1,25 @@
-import React from 'react'
-
+import React ,{useState,useEffect} from 'react'
+import SideBar from './SideBar'
+import AddProductForm from './AddProductForm';
 function SellerDashboard() {
+    const [Activeview,setActiveview] = useState("welcome");
+    useEffect(()=>{
+        console.log(Activeview);  
+    },[Activeview])
   return (
     <>
         <div className='flex p-2 bg-gray-100 h-screen w-screen'>
-            <div className='bg-white rounded-2xl h-full w-50'></div>
-            <div className='bg-orange-700 '></div>
+            {/* Side bar*/}
+            <SideBar setActiveview={setActiveview}/>
+            {/* Showing area */}
+            <div className='flex h-full w-full'>
+                {
+                    (Activeview=='AddProduct')?
+                        <AddProductForm/>:<></>
+                }
+
+                
+            </div>
         </div> 
     </>
   )
