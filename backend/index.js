@@ -15,13 +15,13 @@ dns.setServers(['8.8.8.8','1.1.1.1']);
 dotenv.config();
 
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 const app = express();
 
 
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL ,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -38,10 +38,18 @@ app.get('/',(req,res)=>{
 })
 
 
-app.listen(PORT,async()=>{
-    await connectDB()
-    console.log(`your backend is running on port ${PORT} , http://localhost:${PORT}`);
-})
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Database connection failed", error);
+  }
+};
+
+startServer();
 
 
 // git add .         
