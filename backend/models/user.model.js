@@ -24,11 +24,11 @@ const userSchema = new mongoose.Schema({
     avatar:{
       type: String, // location of pfp.
     },
-
     phone:{
       type: String,
       unique: true,
     },
+    
 },
 {timestamps: true});
 

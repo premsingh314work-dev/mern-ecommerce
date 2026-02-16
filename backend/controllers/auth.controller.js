@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import { GenreateJWT } from "../middlewares/jwt.middleware.js";
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const SignupMethod = async (req, res) => {
   const { name, email, password, avatar, phone } = req.body;
   try {
@@ -23,9 +25,9 @@ export const SignupMethod = async (req, res) => {
     const jwt_token = GenreateJWT(payload);
 
     res.cookie("jwt", jwt_token, {
-      httpOnly: true, // prevents JS access to cookie
-      secure: true,    // only HTTPS in prod
-      sameSite: "none", 
+      httpOnly: true,
+      secure: isProduction, // only HTTPS in production
+      sameSite: isProduction ? "none" : "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(201).json({
@@ -56,9 +58,9 @@ export const LoginMethod = async (req, res) => {
       };
       const jwt_token = GenreateJWT(payload);
       res.cookie("jwt", jwt_token, {
-        httpOnly: true, // prevents JS access to cookie
-        secure: true,    // only HTTPS in prods
-        sameSite: "none", 
+        httpOnly: true,
+        secure: isProduction, // only HTTPS in production
+        sameSite: isProduction ? "none" : "lax",
         maxAge: 24 * 60 * 60 * 1000,
       });
       // console.log(existingUser);

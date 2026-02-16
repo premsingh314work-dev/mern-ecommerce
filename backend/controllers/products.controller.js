@@ -80,6 +80,7 @@ export const Post_Products = async (req, res) => {
       category,
       stock,
       images,
+      discount_percentage,
     } = req.body;
     const newProduct = new productModel({
       seller: seller_id,
@@ -89,7 +90,7 @@ export const Post_Products = async (req, res) => {
       description,
       category,
       stock,
-      images,
+      images,discount_percentage,
     });
     await newProduct.save();
     console.log(newProduct);
