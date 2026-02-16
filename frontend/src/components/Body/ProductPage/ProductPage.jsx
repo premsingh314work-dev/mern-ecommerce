@@ -19,10 +19,12 @@ function ProductPage() {
     const fetchProducts = async () => {
       setLoading(true);
       try {
+        // console.log("Product page api called.");
+        
         const res = await axios.get(
           `${Backend_url}/api/products?search=${searchQuery}`,
         );
-        // console.log(res);
+        // console.log(res.data.productsList);
         
         setProducts(res.data.productsList || []);        
       } catch (err) {
@@ -40,18 +42,6 @@ function ProductPage() {
 
   return (
     <>
-      {/* <div className="p-4">
-      <h2 className="text-xl font-bold">Results</h2>
-
-      {products.length === 0 && <p>No products found</p>}
-
-      {products.map((p) => (
-        <div key={p._id} className="border p-2 my-2">
-          {p.productName}
-        </div>
-      ))}
-    </div> */}
-
       <nav className="p-1 h-auto text-left shadow-md">
         <p className="text-base font-medium w-fit">
           {" "}

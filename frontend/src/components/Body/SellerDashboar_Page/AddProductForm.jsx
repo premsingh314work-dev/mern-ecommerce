@@ -9,6 +9,7 @@ function AddProductForm() {
   const [Quantity, setQuantity] = useState("");
   const [Category, setCategory] = useState("");
   const [Desc, setDesc] = useState("");
+  const [DiscountPercent, setDiscountPercent] = useState("");
   const [loading, setloading] = useState(false);
   const [Images, setImages] = useState([]);
 
@@ -60,6 +61,7 @@ function AddProductForm() {
       category: Category,
       stock: Number(Quantity),
       images: Images,
+      discount_percentage:Number(DiscountPercent),
     };
 
     try {
@@ -77,6 +79,7 @@ function AddProductForm() {
         setModelNo("");
         setPrice("");
         setQuantity("");
+        setDiscountPercent("");
         setCategory("");
         setDesc("");
         setImages([]); // Clear the Cloudinary image array
@@ -160,22 +163,38 @@ function AddProductForm() {
           </div>
 
           {/* Row 3: Full Width Category Select */}
-          <div className="flex flex-col">
-            <label className="font-semibold mb-1">Category</label>
-            <select
-              className="border rounded-md p-2 outline-none focus:ring-2 focus:ring-blue-400 border-gray-300 bg-white"
-              value={Category}
-              onChange={(e) => {
-                setCategory(e.target.value);
-              }}
-            >
-              <option value="">Select Category</option>
-              {CATEGORY_LIST.sort().map((cat, index) => (
-                <option key={index} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex flex-col">
+              <label className="font-semibold mb-1">Category</label>
+              <select
+                className="border rounded-md p-2 outline-none focus:ring-2 focus:ring-blue-400 border-gray-300 bg-white"
+                value={Category}
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
+              >
+                <option value="">Select Category</option>
+                {CATEGORY_LIST.sort().map((cat, index) => (
+                  <option key={index} value={cat}>
+                    {cat}
+                  </option>
+                ))} 
+              </select>
+            </div>
+            <div className="flex flex-col">
+              <label className="font-semibold mb-1">Discount in%<span className="text-gray-400 font-normal">(Optional)</span></label>
+              <input
+                type="number"
+                placeholder="0%"
+                value={DiscountPercent}
+                onChange={(e) => {
+                  setDiscountPercent(e.target.value);
+                }}
+                min="0"
+                step="1"
+                className="border rounded-md p-2 outline-none focus:ring-2 focus:ring-blue-400 border-gray-300"
+              />
+            </div>
           </div>
 
           {/* Row 4: Image Upload Area */}

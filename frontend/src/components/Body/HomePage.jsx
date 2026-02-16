@@ -15,8 +15,9 @@ function HomePage() {
         </div>
 
         <div className="h-auto p-1">
-          <BestSeller/> 
+          
           <RecentlyViewed/>
+          <BestSeller/> 
           <>
             <div className="text-center p-10">
               <h1 className="text-7xl font-semibold ">FOOTER AEGA YAHA</h1>
