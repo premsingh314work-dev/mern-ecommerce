@@ -1,13 +1,17 @@
 import express from "express";
 import { protect } from "../middlewares/protected.middleware.js";
-import { isUser } from "../middlewares/isAdmin.middleware.js";
-import { AddtoCart, Get_Cart } from "../controllers/cart.controller.js";
+import {
+  AddtoCart,
+  Get_Cart,
+  updateCartQuantity,
+} from "../controllers/cart.controller.js";
 
-const CartRouter= express.Router();
+const CartRouter = express.Router();    
+CartRouter.get("/", protect, Get_Cart);
+CartRouter.post("/", protect, AddtoCart);
 
-CartRouter.post('/',protect,isUser, AddtoCart);
-CartRouter.get('/',protect,isUser, Get_Cart);
-// CartRouter.post('/product',protect, isAdmin, Post_Products);
-
+// Update/Increment/Decrement existing product quantity
+// Using PATCH because we are modifying an existing resource
+CartRouter.patch("/update", protect, updateCartQuantity);
 
 export default CartRouter;

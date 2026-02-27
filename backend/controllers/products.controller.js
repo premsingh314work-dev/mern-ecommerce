@@ -1,6 +1,7 @@
+import cartModel from "../models/cart.model.js";
 import productModel from "../models/product.model.js";
 
-export const Get_Products = async (req, res) => {
+export const Get_Products = async (req, res) =>{
   try {
     let { search, limit, category, page } = req.query;
     if (Number(page) <= 0) {
