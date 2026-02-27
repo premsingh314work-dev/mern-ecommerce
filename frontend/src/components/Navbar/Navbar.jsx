@@ -7,6 +7,8 @@ import { useAuth } from "../Universal/AuthContext";
 function Navbar() {
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
   const { user, loading, setUser } = useAuth();
+  console.log(user);
+  
   const [value, setValue] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -50,10 +52,11 @@ function Navbar() {
       <div className="flex items-center gap-6 font-semibold">
         <span className="hover:text-gray-600 cursor-pointer">Support</span>
         <span className="hover:text-gray-600 cursor-pointer">Wallet</span>
-
+        <Link to="/cart">
         <button className="hover:scale-110 transition">
           <ShoppingCart size={28} />
         </button>
+        </Link>
 
         {/* Auth UI */}
         {!loading && (

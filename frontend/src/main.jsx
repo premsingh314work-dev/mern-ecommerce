@@ -4,11 +4,14 @@ import "./index.css";
 import App from "./App.jsx";
 import { AuthProvider } from "./components/Universal/AuthContext.jsx";
 import { HistoryProvider } from "./components/Universal/HistoryContext.jsx";
+import { CartProvider } from "./components/Universal/CartContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <AuthProvider>
     <HistoryProvider>
-      <App />
+      <CartProvider>
+        <App />
+      </CartProvider>
     </HistoryProvider>
   </AuthProvider>,
 );

@@ -9,6 +9,7 @@ import LoginPage from "./components/AuthPages/Login/LoginPage";
 import SingleProduct from "./components/Body/SingleProduct/SingleProduct";
 import SellerDashboard from "./components/Body/SellerDashboar_Page/SellerDashboard";
 import ProtectedRoute from "./components/Universal/ProtectedRoute";
+import CartPage from "./components/Body/CartPage/CartPage";
 
 function App() {
   return (
@@ -18,15 +19,23 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductPage />} />
           <Route path="/products/:prodid" element={<SingleProduct />} />
+          <Route
+            element={
+              <ProtectedRoute allowedRoles={["Admin", "Seller", "User"]} />
+            }
+          >
+            <Route path="/cart" element={<CartPage />} />
+          </Route>
         </Route>
-        
+
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         {/* Protected Routes */}
         <Route element={<ProtectedRoute allowedRoles={["Seller"]} />}>
           <Route path="/sellerdashboard" element={<SellerDashboard />} />
         </Route>
-        <Route element={<ProtectedRoute allowedRoles={["Admin"]}/> }>
+
+        <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
           <Route path="/admindashboard" element={<> </>} />
         </Route>
       </Routes>

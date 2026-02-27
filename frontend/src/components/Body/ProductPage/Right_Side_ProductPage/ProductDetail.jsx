@@ -1,56 +1,7 @@
-// import React, { memo } from "react";
-// import { Link } from "react-router-dom";
-// import { Star, IndianRupee } from "lucide-react";
-// function ProductDetail(props) {
-//   // console.log("Render: ProductDetail");
-//   // console.log(props);
-  
-//   return (
-//     <>
-//       <div>
-//         {/* Product name */}
-//         <Link
-//           to={`/products/${props.product._id}`}
-//           state={{product: props.product }}
-//           // target="_blank"
-//         >
-//           <p className="text-lg font-semibold line-clamp-2">
-//             {props.product.productName}
-//           </p>
-//         </Link>
-//         {/* review comp */}
-//         <div className="flex items-center gap-2">
-//           <span className="text-sm ">{props.product.rating}</span>
-//           <span className="flex">
-//             <Star size={16} className="" color="#FFD700" strokeWidth={1} />
-//             <Star size={16} className="" color="#FFD700" strokeWidth={1} />
-//             <Star size={16} className="" color="#FFD700" strokeWidth={1} />
-//             <Star size={16} className="" color="#FFD700" strokeWidth={1} />
-//             <Star size={16} className="" color="#FFD700" strokeWidth={1} />
-//           </span>
-//         </div>
-//       </div>
-//       <div>
-//         {/* Price */}
-//         <div className="flex items-center justify-between">
-//           <p className="flex items-center text-2xl font-semibold">
-//             <IndianRupee size={20} /> {props.product.price}
-//           </p>
-//         </div>
-//         {/* add to cart div */}
-//         <div className="bg-amber-500 px-4 py-2 w-fit rounded-full font-semibold hover:scale-105 transition">
-//           <button type="button">ADD TO CART</button>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }
-
-// export default React.memo(ProductDetail);
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { Star, IndianRupee, ShoppingCart } from "lucide-react";
+import Addtocartbutton from "../../../Universal/Addtocart.button";
 
 function ProductDetail({ product }) {
   return (
@@ -107,13 +58,8 @@ function ProductDetail({ product }) {
         </div>
 
         {/* Action Button */}
-        <button 
-          type="button" 
-          className="flex items-center justify-center gap-2 bg-amber-400 hover:bg-amber-500 text-gray-900 text-sm font-bold px-6 py-2.5 rounded-full shadow-sm active:scale-95 transition-all"
-        >
-          <ShoppingCart size={16} />
-          ADD TO CART
-        </button>
+        <Addtocartbutton ProductToAdd={product._id}/>
+        
       </div>
     </div>
   );

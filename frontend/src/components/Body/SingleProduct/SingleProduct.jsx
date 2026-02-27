@@ -2,9 +2,11 @@ import { useEffect, useState } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { useHistory } from "../../Universal/HistoryContext";
+import {ShoppingCart } from "lucide-react";
+import Addtocartbutton from "../../Universal/Addtocart.button";
 
 function SingleProduct() {
-  const {AddToHistory} = useHistory();
+  const { AddToHistory } = useHistory();
   const location = useLocation();
   const { prodid } = useParams();
   const Backend_url = import.meta.env.VITE_BACKEND_URL;
@@ -36,7 +38,7 @@ function SingleProduct() {
       fetchProduct();
     }
   }, [prodid]);
-  
+
   useEffect(() => {
     if (product) {
       AddToHistory(product);
@@ -113,7 +115,7 @@ function SingleProduct() {
                 <span className="line-through">
                   ₹
                   {Math.round(
-                    product.price / (1 - (product.discount_percentage / 100)),
+                    product.price / (1 - product.discount_percentage / 100),
                   ).toLocaleString("en-IN")}
                 </span>
               </p>
@@ -131,14 +133,12 @@ function SingleProduct() {
               <span className="font-semibold">
                 {product.stock > 0 ? "In Stock" : "Out of Stock"}
               </span>
-            </div>
+            </div>  
 
             <div className="flex flex-col gap-3">
-              <button className="w-full bg-amber-400 hover:bg-amber-500 py-3 rounded-full font-semibold transition shadow-sm">
-                Add to Cart
-              </button>
+              <Addtocartbutton ProductToAdd={product._id}/>
               <button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-full font-semibold transition shadow-sm">
-                Buy Now
+                BUY NOW
               </button>
             </div>
           </div>
