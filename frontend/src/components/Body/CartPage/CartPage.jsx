@@ -40,7 +40,7 @@ function CartPage() {
               {/* Product Image */}
               <div className="w-24 h-24 shrink-0 bg-gray-50 rounded-xl overflow-hidden border">
                 <img
-                  src={item.productId?.images?.[0]?.url || "https://via.placeholder.com/150"}
+                  src={item.productId?.images?.[0]?.url}
                   alt={item.productId?.productName}
                   className="w-full h-full object-cover"
                 />
