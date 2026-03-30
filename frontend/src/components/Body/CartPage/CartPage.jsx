@@ -37,11 +37,14 @@ function CartPage() {
               key={item.productId?._id}
               className="flex items-center gap-6 border border-gray-100 p-5 rounded-2xl bg-white shadow-sm"
             >
+              {
+              console.log(item)
+              }
               {/* Product Image */}
               <div className="w-24 h-24 shrink-0 bg-gray-50 rounded-xl overflow-hidden border">
                 <img
-                  src={item.productId.images[0].url}
-                  alt={item.productId.productName}
+                  src={item.productId?.images?.[0]?.url || "https://res.cloudinary.com/db2lak2ea/image/upload/v1772292688/Pngtree_reload_vector_icon_4015267_r7wovq.png"}
+                  alt={item.productId?.productName}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -60,7 +63,7 @@ function CartPage() {
               {/* Quantity Controls */}
               <div className="flex items-center bg-gray-100 rounded-full px-2 py-1">
                 <button
-                  onClick={() => updateCartItem(item.productId._id, -1)}
+                  onClick={() => updateCartItem(item.productId, -1)}
                   className="p-1.5 hover:bg-white hover:shadow-sm rounded-full transition-all text-gray-600"
                 >
                   <Minus size={16} />
@@ -71,7 +74,7 @@ function CartPage() {
                 </span>
                 
                 <button
-                  onClick={() => updateCartItem(item.productId._id, 1)}
+                  onClick={() => updateCartItem(item.productId, 1)}
                   className="p-1.5 hover:bg-white hover:shadow-sm rounded-full transition-all text-gray-600"
                 >
                   <Plus size={16} />
