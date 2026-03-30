@@ -5,7 +5,7 @@ import {connectDB} from './lib/db.js';
 import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import ProductRouter from "./routers/products.router.js";
-import MeRouter from "./routers/me.router.js";
+
 import CartRouter from "./routers/cart.route.js";
 import dns from 'node:dns/promises';
 
@@ -31,7 +31,7 @@ app.use(
 );
 app.use(cookieParser());
 app.use(express.json());
-app.use("/api/user",MeRouter);
+
 app.use("/api/cart",CartRouter);
 app.use("/api/auth",Authrouter);
 app.use("/api/products",ProductRouter);

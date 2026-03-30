@@ -11,7 +11,7 @@ export const SignupMethod = async (req, res) => {
       console.log(existing_user);
       return res.status(409).json({ message: "User already exists" });
     }
-    const new_user = new User({ name, email, password, avatar, phone });
+    const new_user = new User({ name:name, email:email, password:password, avatar:avatar, phone:phone });
     await new_user.save();
 
     const payload = {
@@ -32,6 +32,7 @@ export const SignupMethod = async (req, res) => {
     });
     res.status(201).json({
       message: "User created and Logged in!",
+      user:payload
     });
   } catch (err) {
     console.error("Error during user sign up:", err.message);
@@ -64,7 +65,7 @@ export const LoginMethod = async (req, res) => {
         maxAge: 24 * 60 * 60 * 1000,
       });
       // console.log(existingUser);
-      return res.status(200).json({ message: "True", token: jwt_token });
+      return res.status(200).json({ message: "Login SuccessFully!", user:payload});
     } else {
       return res.status(404).json({ message: "Invalid email or password" });
     }
