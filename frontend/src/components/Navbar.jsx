@@ -7,12 +7,6 @@ import CartPage from "../pages/CartPage";
 
 const Navbar = () => {
   const { authUser, logout } = useAuthStore();
-
-  const [isDropDown, setisDropDown] = useState(false);
-
-  const handleDropDown = () => {
-    setisDropDown((prev) => !prev);
-  };
   return (
     <div className="sticky top-0 z-50 isolate bg-white/10 backdrop-blur-md shadow-lg ring-1 ring-black/5 px-6 py-3 flex items-center justify-between gap-6">
       {/* LOGO */}
@@ -25,7 +19,7 @@ const Navbar = () => {
         <input
           type="text"
           placeholder="Search products..."
-          className="w-full p-2 pl-10 rounded-full bg-white/30 ring-1 ring-black/5 focus:ring-2 focus:ring-cyan-500 focus:outline-none placeholder:text-gray-500"
+          className="w-full p-2 pl-10 rounded-full bg-white/30 ring-1 ring-black/5 focus:ring-2 focus:ring-cyan-500 focus:outline-none placeholder:text-white"
         />
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 w-5 h-5" />
       </div>
