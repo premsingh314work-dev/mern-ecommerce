@@ -6,25 +6,32 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import "./App.css";
 import { useAuthStore } from "./stores/useAuthStore.js";
-
+import PageLoader from "./components/PageLoader.jsx";
 
 function App() {
+  const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
 
-  const {checkAuth,authUser} = useAuthStore();
-
-  useEffect(()=>{
+  useEffect(() => {
     checkAuth();
-  },[checkAuth])
-  
+  }, [checkAuth]);
+
+  if (isCheckingAuth) return <PageLoader />;
+
   return (
     <>
       <Routes>
-        <Route path="/" element={<HomePage/>}/>
-        <Route path="/login" element={!authUser?<LoginPage/>:<Navigate to='/'/>}/>
-        <Route path="/signup" element={!authUser?<SignupPage/>:<Navigate to='/'/>}/>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/login"
+          element={!authUser ? <LoginPage /> : <Navigate to="/" />}
+        />
+        <Route
+          path="/signup"
+          element={!authUser ? <SignupPage /> : <Navigate to="/" />}
+        />
       </Routes>
 
-      <Toaster/>
+      <Toaster />
     </>
   );
 }

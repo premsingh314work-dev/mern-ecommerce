@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import { useAuthStore } from "../stores/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import toast from "react-hot-toast";
 
 const SignupForm = () => {
   const { isSigningUp, signup } = useAuthStore();
@@ -34,7 +35,7 @@ const SignupForm = () => {
     const { name, email, password, phone } = form;
 
     if (!name || !email || !password || !phone) {
-      alert("Please fill all fields");
+      toast.error("Please fill all the fields");
       return;
     }
 
@@ -151,7 +152,6 @@ const SignupForm = () => {
 
                 setCurrentIndex(newIndex);
 
-                // ✅ auto select avatar
                 setForm({
                   ...form,
                   avatar: avatars[newIndex],

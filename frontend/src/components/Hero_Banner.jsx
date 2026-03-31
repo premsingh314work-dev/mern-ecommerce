@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Banner_images } from "../../src/data/Banner.data";
+import { Banner_images } from "../data/Banner.data";
 
 function Hero_Banner() {
 
