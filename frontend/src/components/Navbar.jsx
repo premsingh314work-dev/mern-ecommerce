@@ -1,12 +1,30 @@
 import React, { useState } from "react";
 import { useAuthStore } from "../stores/useAuthStore";
-import { Link } from "react-router-dom";
-import { LayoutDashboardIcon, LogInIcon, LogOutIcon, SearchIcon, SettingsIcon } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  LayoutDashboardIcon,
+  LogInIcon,
+  LogOutIcon,
+  SearchIcon,
+  SettingsIcon,
+} from "lucide-react";
 import SupportPage from "../pages/SupportPage";
 import CartPage from "../pages/CartPage";
+import { useSearchStore } from "../stores/useSearchStore";
 
 const Navbar = () => {
+  const { SearchQuery, setSearchQuery } = useSearchStore();
   const { authUser, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+  const handleQuerySearch = (e) => {
+    if (SearchQuery.trim() === "") return;
+    if (e.key === "Enter") {
+      const params = new URLSearchParams({ search: SearchQuery });
+      navigate(`/products?${params.toString()}`);
+    }
+  };
+
   return (
     <div className="sticky top-0 z-50 isolate bg-white/10 backdrop-blur-md shadow-lg ring-1 ring-black/5 px-6 py-3 flex items-center justify-between gap-6">
       {/* LOGO */}
@@ -20,6 +38,11 @@ const Navbar = () => {
           type="text"
           placeholder="Search products..."
           className="w-full p-2 pl-10 rounded-full bg-white/30 ring-1 ring-black/5 focus:ring-2 focus:ring-cyan-500 focus:outline-none placeholder:text-white"
+          value={SearchQuery}
+          onChange={(e) => {
+            setSearchQuery(e.target.value);
+          }}
+          onKeyDown={handleQuerySearch}
         />
         <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 w-5 h-5" />
       </div>
@@ -50,7 +73,7 @@ const Navbar = () => {
                   <>
                     <li className="border-b border-slate-700/10 hover:scale-105">
                       <Link to="/dashboard" className="flex items-center gap-2">
-                        <LayoutDashboardIcon/>
+                        <LayoutDashboardIcon />
                         Dashboard
                       </Link>
                     </li>
