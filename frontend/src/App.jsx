@@ -9,6 +9,7 @@ import "./App.css";
 import { useAuthStore } from "./stores/useAuthStore.js";
 import PageLoader from "./components/PageLoader.jsx";
 import { useRvStore } from "./stores/useRvStore.js";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -18,11 +19,8 @@ function App() {
   }, [checkAuth]);
 
   useEffect(() => {
-    if(RecentlyViewedProducts.length===0){
-      console.log("useeffect runed");
       getRecentlyViewed();
-    }
-  }, [getRecentlyViewed, RecentlyViewedProducts]);
+  }, [getRecentlyViewed]);
 
   if (isCheckingAuth) return <PageLoader />;
 
@@ -40,6 +38,7 @@ function App() {
           element={!authUser ? <SignupPage /> : <Navigate to="/" />}
         />
       </Routes>
+      <Footer/>
 
       <Toaster />
     </>

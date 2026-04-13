@@ -16,12 +16,12 @@ const CategoryComponent = () => {
   );
 };
 
-const CategoryCard = ({ categoryDetail }) => {
+const CategoryCard = React.memo(({ categoryDetail }) => {
   const navigate = useNavigate();
   return (
     <div className="card bg-base-100 image-full w-70 shadow-sm carousel-item group relative">
       <figure>
-        <img src={categoryDetail.src} alt="Shoes" />
+        <img src={categoryDetail.src} alt="Shoes" loading="lazy" />
       </figure>
 
       <div className="card-body">
@@ -47,6 +47,6 @@ const CategoryCard = ({ categoryDetail }) => {
       </div>
     </div>
   );
-};
+});
 
 export default CategoryComponent;

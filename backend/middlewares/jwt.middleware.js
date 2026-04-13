@@ -5,8 +5,8 @@ dotenv.config();
 
 const secretKey=process.env.SECRET_KEY;
 
-export const GenreateJWT=(payload)=>{
-    const token = jwt.sign(payload,secretKey);
+export const GenerateJWT=(payload)=>{
+    const token = jwt.sign(payload, secretKey, { expiresIn: '24h' });
     return token;
 }
 export const Check_JWT= (req, res, next) => {

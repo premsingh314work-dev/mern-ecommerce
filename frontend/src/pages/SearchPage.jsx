@@ -42,8 +42,8 @@ const SearchPage = () => {
                 key={product._id}
                 className="card bg-white/10 backdrop-blur shadow-lg"
                 onClick={() => {
-                  console.log("Clicked Product:", product.productName);
-                  postRecentlyViewed();
+                  // console.log("Clicked Product:", product.productName);
+                  postRecentlyViewed(product);
                 }}
               >
                 <figure>

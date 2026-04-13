@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import { GenreateJWT } from "../middlewares/jwt.middleware.js";
+import { GenerateJWT } from "../middlewares/jwt.middleware.js";
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -22,7 +22,7 @@ export const SignupMethod = async (req, res) => {
       name: new_user.name,
     };
 
-    const jwt_token = GenreateJWT(payload);
+    const jwt_token = GenerateJWT(payload);
 
     res.cookie("jwt", jwt_token, {
       httpOnly: true,
@@ -57,7 +57,7 @@ export const LoginMethod = async (req, res) => {
         avatar: existingUser.avatar,
         name: existingUser.name,
       };
-      const jwt_token = GenreateJWT(payload);
+      const jwt_token = GenerateJWT(payload);
       res.cookie("jwt", jwt_token, {
         httpOnly: true,
         secure: isProduction, // only HTTPS in production
