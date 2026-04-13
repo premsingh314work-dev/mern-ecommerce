@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const productSchema = new mongoose.Schema(
   {
     productName: {
@@ -6,18 +7,23 @@ const productSchema = new mongoose.Schema(
       required: [true, "Product name is required"],
       trim: true,
       maxlength: [100, "Name cannot exceed 100 characters"],
-    },
-    description: {
+    },    
+    shortDescription: {
       type: String,
-      required: [true, "Please provide a product description"],
-      maxlength: [2000, "Description is too long"],
+      required: [true, "Please provide a short description"],
+      maxlength: [1000, "Description is too long"],
     },
-    // Use an array for multiple images;
+    features: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
     images: [
       {
         public_id: { type: String, required: true },
         url: { type: String, required: true },
-        _id: false, 
+        _id: false,
       },
     ],
     price: {
@@ -25,11 +31,11 @@ const productSchema = new mongoose.Schema(
       required: [true, "Price is required"],
       min: [0, "Price cannot be negative"],
     },
-    discount_percentage: { 
-    type: Number,
-    required:false, 
-    default: 0 
-  },
+    discount_percentage: {
+      type: Number,
+      required: false,
+      default: 0,
+    },
     category: {
       type: String,
       required: true,
@@ -41,9 +47,9 @@ const productSchema = new mongoose.Schema(
       default: 0,
     },
     modelNo: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true, // This is great to have!
     },
     ratings: {
       type: Number,
@@ -55,22 +61,40 @@ const productSchema = new mongoose.Schema(
     },
     seller: {
       type: mongoose.Schema.ObjectId,
-      ref: "User", // Links product to the admin who created it
+      ref: "User", 
       required: true,
     },
+    tags: [
+      {
+        type: String,
+        trim: true,      // Changes "  shoes " to "shoes"
+        lowercase: true, // Changes "SHOES" to "shoes"
+      },
+    ],
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
+// Standard index for quick category lookups
 productSchema.index({ category: 1 }, { name: "idx_category" });
 
+// UPDATED: The Text Index for your Search Bar
 productSchema.index(
   {
     productName: "text",
-    description: "text",
+    shortDescription: "text", 
     category: "text",
+    tags: "text", // Now your search bar will look through tags natively!
   },
-  { name: "idx_product_search" },
+  { 
+    name: "idx_product_search",
+    weights: {
+      productName: 10,
+      tags: 5,
+      category: 3,
+      shortDescription: 1
+    }
+  }
 );
 
 const productModel = mongoose.model("Product", productSchema);

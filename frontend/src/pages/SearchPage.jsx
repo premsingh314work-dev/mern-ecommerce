@@ -2,16 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useSearchStore } from "../stores/useSearchStore";
 import Navbar from "../components/Navbar";
+import { useRvStore } from "../stores/useRvStore";
 
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("search");
   const { searchProducts, productList, isSearching, setSearchQuery } = useSearchStore();
 
+const {RecentlyViewedProducts,postRecentlyViewed} = useRvStore()
+
   useEffect(() => {
     if (query) {
       setSearchQuery(query);
       searchProducts(query);
+      console.log(RecentlyViewedProducts);
     }
   }, [query, searchProducts, setSearchQuery]);
   if (isSearching) {
@@ -34,6 +38,10 @@ const SearchPage = () => {
               <div
                 key={product._id}
                 className="card bg-white/10 backdrop-blur shadow-lg"
+                onClick={()=>{
+                  console.log("Clicked Product:",product.productName);
+                  postRecentlyViewed();
+                }}
               >
                 <figure>
                   <img

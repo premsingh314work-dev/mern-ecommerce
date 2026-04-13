@@ -1,46 +1,82 @@
 import cartModel from "../models/cart.model.js";
 import productModel from "../models/product.model.js";
-import redisClient from "../lib/redisClient.js.js";
+import { redis } from "../lib/redis.js";
+import { addRecentlyViewed, getRecentlyViewed } from "../utils/redis.utils.js";
+
+// Import your Product model
+// import Product from '../models/Product.js'; 
 
 export const Get_Products = async (req, res) => {
   try {
-    let { search, limit, category, page } = req.query;
-    if (Number(page) <= 0) {
-      page = 1;
-    }
+    // 1. Grab everything from the URL query
+    // Example URL: /products?search=shoes&category=mens&tags=sale,summer&page=2&limit=10
+    const { search, category, tags, page, limit } = req.query;
 
-    const skip = ((page ? page : 1) - 1) * (limit ? limit : 10);
-    // console.log(page,limit,skip, prodid);
+    // 2. Pagination Math (Safely convert strings to numbers)
+    const pageNumber = Number(page) > 0 ? Number(page) : 1; // Default to page 1
+    const limitNumber = Number(limit) > 0 ? Number(limit) : 10; // Default to 10 items per page
+    const skipAmount = (pageNumber - 1) * limitNumber;
 
+    // 3. Build the Database Filter
     const filter = {};
     const sort = {};
+    let projection = {};
 
+    // A. Text Search Filter (Requires a text index on your MongoDB schema)
     if (search) {
       filter.$text = { $search: search };
-      sort.score = { $meta: "textScore" };
-      // filter.$or = [{ productName: { $regex: search, $options: "i" } },{ category: { $regex: search, $options: "i" } }];
+      projection = { score: { $meta: "textScore" } }; // Tell Mongo to grade the match
+      sort.score = { $meta: "textScore" }; // Sort by the best match first
+    } else {
+      // If no search, default to sorting by newest products first
+      sort.createdAt = -1; 
     }
+
+    // B. Category Filter
     if (category) {
       filter.category = category;
     }
 
-    const projection = search ? { score: { $meta: "textScore" } } : {};
+    // C. Tags Filter (Finds products that have AT LEAST ONE of the requested tags)
+    if (tags) {
+      // Converts "sale, summer " into ['sale', 'summer']
+      const tagsArray = tags.split(',').map(tag => tag.trim().toLowerCase());
+      filter.tags = { $in: tagsArray };
+    }
 
-    let products = await productModel
-      .find()
-      .find(filter, projection)
-      .skip(skip)
-      .limit(Number(limit) || 10)
-      .sort(sort);
-    res.json({
-      productsList: products,
-      page,
-      limit,
+    // 4. Fetch the Data (Using Promise.all makes these run at the same time for speed)
+    const [products, totalProducts] = await Promise.all([
+      // Fetch the specific 10 items for the current page
+      productModel.find(filter, projection)
+        .sort(sort)
+        .skip(skipAmount)
+        .limit(limitNumber),
+      
+      // Count HOW MANY total products match this filter in the whole database
+      productModel.countDocuments(filter) 
+    ]);
+
+    // 5. Calculate total pages for the frontend
+    const totalPages = Math.ceil(totalProducts / limitNumber);
+
+    // 6. Send the perfect response back to the frontend
+    res.status(200).json({
+      success: true,
+      data: products,
+      pagination: {
+        totalProducts,      // e.g., 45
+        totalPages,         // e.g., 5
+        currentPage: pageNumber, // e.g., 2
+        itemsPerPage: limitNumber // e.g., 10
+      }
     });
-  } catch (err) {
+
+  } catch (error) {
+    console.error("Failed to fetch products:", error);
     res.status(500).json({
+      success: false,
       message: "Failed to fetch products",
-      error: err.message,
+      error: error.message,
     });
   }
 };
@@ -110,48 +146,32 @@ export const Post_Products = async (req, res) => {
   }
 };
 
-export const trackRecentlyViewed = async (req, res) => {
+export const addProductToRecentlyViewed = async (req, res) => {
   try {
+    const { itemId } = req.params;
     const userId = req.user._id;
-    const { productId } = req.body;
-    const redisKey = `recently_viewed:${userId}`;
-    const timestamp = Date.now();
-    // 1. Add to sorted set
-    await redisClient.zAdd(redisKey, [{ score: timestamp, value: productId }]);
-
-    // 2. Cap the list at 15 items (remove oldest)
-    await redisClient.zRemRangeByRank(redisKey, 0, -16);
-
-    res.status(200).json({ message: "Product tracked" });
+    await addRecentlyViewed(userId, itemId);
+    res
+      .status(201)
+      .json({ message: `Product added in recently viewed ${itemId}` });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error adding to recently viewed:", error);
+    res
+      .status(500)
+      .json({ message: "Server error while saving recently viewed item." });
   }
 };
-
-// 2. Controller to Fetch the List
-export const getRecentlyViewed = async (req, res) => {
+export const getRecentlyViewedProducts = async (req, res) => {
   try {
-    const userId = req.user._id.toString();
-    const redisKey = `recently_viewed:${userId}`;
-
-    // Get IDs from Redis, newest first
-    const productIds = await redisClient.zRevRange(redisKey, 0, -1);
-
-    if (productIds.length === 0) {
-      return res.status(200).json([]);
-    }
-
-    // Fetch actual product details from MongoDB
-    const products = await productModel.find({ _id: { $in: productIds } });
-
-    // CRITICAL: MongoDB doesn't maintain the Redis sorting order.
-    // We must map the MongoDB results back to the sorted order of productIds.
-    const sortedProducts = productIds
-      .map((id) => products.find((p) => p._id.toString() === id))
-      .filter((p) => p !== undefined); // filter out any nulls just in case
-
-    res.status(200).json(sortedProducts);
+    const userId = req.user._id;
+    
+    const rvPrdouctIDs = await getRecentlyViewed(userId);
+    
+    res.status(200).json(rvPrdouctIDs);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error("Error adding to recently viewed:", error);
+    res
+      .status(500)
+      .json({ message: "Server error while getting recently viewed item." });
   }
 };

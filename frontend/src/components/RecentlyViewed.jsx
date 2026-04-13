@@ -3,7 +3,8 @@ import { useRvStore } from "../stores/useRvStore";
 
 const RecentlyViewed = () => {
   const { RecentlyViewedProducts } = useRvStore();
-
+  console.log(RecentlyViewedProducts);
+  
   return (
     <>
       <div>
@@ -12,7 +13,7 @@ const RecentlyViewed = () => {
       {RecentlyViewedProducts.length === 0 ? (
         <div className="text-gray-500">No recently viewed products yet.</div>
       ) : (
-        <div className="flex gap-5 flex-wrap">
+        <div className="flex gap-5 flex-wrap h-50 ">
           {RecentlyViewedProducts.map((product) => (
             <RecentlyViewedProd key={product._id} product={product} />
           ))}
