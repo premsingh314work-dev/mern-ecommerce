@@ -8,27 +8,27 @@ const RecentlyViewed = () => {
 
   return (
     <>
-      <div>
+      <div className="bg-gray-400/10 flex flex-col gap-3 p-3">
         <h3 className="text-3xl font-semibold tracking-wide">
           Recently Viewed
         </h3>
+        {RecentlyViewedProducts.length === 0 ? (
+          <div className="text-gray-500">No recently viewed products yet.</div>
+        ) : (
+          <div className="carousel carousel-end rounded-box gap-3">
+            {RecentlyViewedProducts.map((product) => (
+              <RecentlyViewedProd key={product._id} product={product} />
+            ))}
+          </div>
+        )}
       </div>
-      {RecentlyViewedProducts.length === 0 ? (
-        <div className="text-gray-500">No recently viewed products yet.</div>
-      ) : (
-        <div className="carousel carousel-end rounded-box gap-3">
-          {RecentlyViewedProducts.map((product) => (
-            <RecentlyViewedProd key={product._id} product={product} />
-          ))}
-        </div>
-      )}
     </>
   );
 };
 const RecentlyViewedProd = React.memo(({ product }) => {
   return (
     // 1. Main Container: Added group for hover states and fixed width
-    <div className="group relative w-45 cursor-pointer overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl carousel-item group">
+    <div className="group relative w-50 cursor-pointer overflow-hidden rounded-2xl bg-gray-100 shadow-sm transition-all duration-300 hover:shadow-xl carousel-item group">
       <figure className="relative m-0 flex aspect-[4/5] flex-col">
         {/* 2. The Image with Hover Zoom */}
         <img

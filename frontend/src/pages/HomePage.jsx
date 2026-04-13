@@ -11,6 +11,7 @@ const HomePage = () => {
     <Navbar/>
     <div className="p-3 flex flex-col gap-5">
       <Hero_Banner/>
+      
       <CategoryComponent/>
       <RecentlyViewed/>
     </div>

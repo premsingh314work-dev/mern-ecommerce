@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 const CategoryComponent = () => {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 bg-gray-400/10 p-3">
       <h3 className="text-3xl font-semibold tracking-wide">Categories</h3>
       <div className="carousel carousel-end rounded-box gap-3">
         {CategoryListData.map((categoryDetail, index) => {

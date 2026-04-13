@@ -10,6 +10,8 @@ export const useRvStore = create((set, get) => ({
     if (get().hasFetchedInitial) return;
     try {
       set({ isLoading: true });
+      console.log("redis called");
+      
       const res = await axiosInstance.get("/products/getrecentlyviewed");
       set({
         RecentlyViewedProducts: res.data,
