@@ -19,7 +19,9 @@ export const useRvStore = create((set, get) => ({
   },
   postRecentlyViewed: async (productId) => {
     try {
-      await axiosInstance.post("/products/recently-viewed", { productId });
+      const currentRecentlyViewedProducts = get().RecentlyViewedProducts;
+      await axiosInstance.post(`/products/postrecentlyviewed/${productId}`,);
+           
     } catch (err) {
       console.log("error in postRecentlyViewed(redis):", err);
     }

@@ -7,15 +7,19 @@ import { useRvStore } from "../stores/useRvStore";
 const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("search");
-  const { searchProducts, productList, isSearching, setSearchQuery } = useSearchStore();
+  const { searchProducts, productList, isSearching, setSearchQuery } =
+    useSearchStore();
 
-const {RecentlyViewedProducts,postRecentlyViewed} = useRvStore()
+  const { postRecentlyViewed } = useRvStore();
+
+  useEffect(() => {
+    console.log("query:", query, "\n", "productList", productList);
+  }, [productList]);
 
   useEffect(() => {
     if (query) {
       setSearchQuery(query);
       searchProducts(query);
-      console.log(RecentlyViewedProducts);
     }
   }, [query, searchProducts, setSearchQuery]);
   if (isSearching) {
@@ -26,8 +30,7 @@ const {RecentlyViewedProducts,postRecentlyViewed} = useRvStore()
       <Navbar />
       <div className="p-6">
         <h2 className="text-3xl font-semibold mb-4">
-          Search Results for:{" "}
-          <span className="text-cyan-500">{query}</span>
+          Search Results for: <span className="text-cyan-500">{query}</span>
         </h2>
 
         {isSearching ? (
@@ -38,8 +41,8 @@ const {RecentlyViewedProducts,postRecentlyViewed} = useRvStore()
               <div
                 key={product._id}
                 className="card bg-white/10 backdrop-blur shadow-lg"
-                onClick={()=>{
-                  console.log("Clicked Product:",product.productName);
+                onClick={() => {
+                  console.log("Clicked Product:", product.productName);
                   postRecentlyViewed();
                 }}
               >

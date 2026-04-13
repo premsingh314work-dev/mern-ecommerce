@@ -13,7 +13,8 @@ export const useSearchStore = create((set, get) => ({
     try {
       set({ isSearching: true, SearchQuery });
       const res = await axiosInstance.get(`/products?search=${SearchQuery}`);
-      set({ productList: res.data.productsList || [] });
+      // console.log(res.data.data);      
+      set({ productList: res.data.data || [] });
       // Navigation will be handled by the Navbar component
     } catch (err) {
       console.log("Search error:", err);

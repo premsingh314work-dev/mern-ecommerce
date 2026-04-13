@@ -12,15 +12,17 @@ import { useRvStore } from "./stores/useRvStore.js";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
-  const { getRecentlyViewed } = useRvStore();
+  const { getRecentlyViewed, RecentlyViewedProducts } = useRvStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+
   useEffect(() => {
-    if (authUser) {
+    if(RecentlyViewedProducts.length===0){
+      console.log("useeffect runed");
       getRecentlyViewed();
     }
-  }, [authUser, getRecentlyViewed]);
+  }, [getRecentlyViewed, RecentlyViewedProducts]);
 
   if (isCheckingAuth) return <PageLoader />;
 

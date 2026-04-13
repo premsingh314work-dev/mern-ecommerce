@@ -4,7 +4,7 @@ import { redis } from "../lib/redis.js";
 import { addRecentlyViewed, getRecentlyViewed } from "../utils/redis.utils.js";
 
 // Import your Product model
-// import Product from '../models/Product.js'; 
+// import Product from '../models/Product.js';
 
 export const Get_Products = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ export const Get_Products = async (req, res) => {
       sort.score = { $meta: "textScore" }; // Sort by the best match first
     } else {
       // If no search, default to sorting by newest products first
-      sort.createdAt = -1; 
+      sort.createdAt = -1;
     }
 
     // B. Category Filter
@@ -40,20 +40,21 @@ export const Get_Products = async (req, res) => {
     // C. Tags Filter (Finds products that have AT LEAST ONE of the requested tags)
     if (tags) {
       // Converts "sale, summer " into ['sale', 'summer']
-      const tagsArray = tags.split(',').map(tag => tag.trim().toLowerCase());
+      const tagsArray = tags.split(",").map((tag) => tag.trim().toLowerCase());
       filter.tags = { $in: tagsArray };
     }
 
     // 4. Fetch the Data (Using Promise.all makes these run at the same time for speed)
     const [products, totalProducts] = await Promise.all([
       // Fetch the specific 10 items for the current page
-      productModel.find(filter, projection)
+      productModel
+        .find(filter, projection)
         .sort(sort)
         .skip(skipAmount)
         .limit(limitNumber),
-      
+
       // Count HOW MANY total products match this filter in the whole database
-      productModel.countDocuments(filter) 
+      productModel.countDocuments(filter),
     ]);
 
     // 5. Calculate total pages for the frontend
@@ -64,13 +65,12 @@ export const Get_Products = async (req, res) => {
       success: true,
       data: products,
       pagination: {
-        totalProducts,      // e.g., 45
-        totalPages,         // e.g., 5
+        totalProducts, // e.g., 45
+        totalPages, // e.g., 5
         currentPage: pageNumber, // e.g., 2
-        itemsPerPage: limitNumber // e.g., 10
-      }
+        itemsPerPage: limitNumber, // e.g., 10
+      },
     });
-
   } catch (error) {
     console.error("Failed to fetch products:", error);
     res.status(500).json({
@@ -164,10 +164,23 @@ export const addProductToRecentlyViewed = async (req, res) => {
 export const getRecentlyViewedProducts = async (req, res) => {
   try {
     const userId = req.user._id;
-    
-    const rvPrdouctIDs = await getRecentlyViewed(userId);
-    
-    res.status(200).json(rvPrdouctIDs);
+
+    const rvProductIDs = await getRecentlyViewed(userId);
+    if (!rvProductIDs || rvProductIDs.length === 0) {
+      return res.status(200).json([]);
+    }
+    const rvproducts = await productModel
+      .find({
+        _id: { $in: rvProductIDs },
+      })
+      .select("name images tags reviews price ratings");
+    const correctlyOrderedProducts = rvProductIDs
+      .map((id) => {
+        // Find the specific product that matches the current ID in the Redis loop
+        return rvproducts.find((product) => product._id.toString() === id);
+      })
+      .filter((product) => product !== undefined);
+    res.status(200).json(correctlyOrderedProducts);
   } catch (error) {
     console.error("Error adding to recently viewed:", error);
     res
