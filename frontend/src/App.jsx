@@ -10,6 +10,7 @@ import { useAuthStore } from "./stores/useAuthStore.js";
 import PageLoader from "./components/PageLoader.jsx";
 import { useRvStore } from "./stores/useRvStore.js";
 import Footer from "./components/Footer.jsx";
+import ProductPage from "./pages/ProductPage.jsx";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<SearchPage />} />
+        <Route path="/product/:id" element={<ProductPage/>} />
         <Route
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}

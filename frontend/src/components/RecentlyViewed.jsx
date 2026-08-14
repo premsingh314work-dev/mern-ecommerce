@@ -1,9 +1,10 @@
 import React from "react";
 import { useRvStore } from "../stores/useRvStore";
 import { IndianRupee, Star } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const RecentlyViewed = () => {
-  const { RecentlyViewedProducts ,isLoading} = useRvStore();
+  const { RecentlyViewedProducts, isLoading } = useRvStore();
   // console.log(RecentlyViewedProducts);
 
   return (
@@ -12,12 +13,14 @@ const RecentlyViewed = () => {
         <h3 className="text-3xl font-semibold tracking-wide">
           Recently Viewed
         </h3>
-        {RecentlyViewedProducts.length === 0 && isLoading===false ? (
+        {RecentlyViewedProducts.length === 0 && isLoading === false ? (
           <div className="text-gray-500">No recently viewed products yet.</div>
         ) : (
           <div className="carousel carousel-end rounded-box gap-3">
             {RecentlyViewedProducts.map((product) => (
-              <RecentlyViewedProd key={product._id} product={product} />
+              <Link to={`/product/${product._id}`} key={product._id}>
+                <RecentlyViewedProd product={product} />
+              </Link>
             ))}
           </div>
         )}
