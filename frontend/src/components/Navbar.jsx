@@ -49,8 +49,10 @@ const Navbar = () => {
 
       {/* RIGHT SIDE */}
       <div className="flex items-center gap-5">
-        <SupportPage />
-        <CartPage />
+        <Link to="/supportpage">
+          <SupportPage />
+        </Link>
+        <Link to="/cart">CartPage</Link>
 
         {/* AVATAR */}
         <div className="dropdown dropdown-end">
@@ -69,10 +71,13 @@ const Navbar = () => {
           >
             {authUser ? (
               <>
-                {authUser.role === "Seller" ? (
+                {(authUser.role || "").toString().toLowerCase() === "seller" ? (
                   <>
                     <li className="border-b border-slate-700/10 hover:scale-105">
-                      <Link to="/dashboard" className="flex items-center gap-2">
+                      <Link
+                        to="/seller/dashboard"
+                        className="flex items-center gap-2"
+                      >
                         <LayoutDashboardIcon />
                         Dashboard
                       </Link>

@@ -11,6 +11,9 @@ import PageLoader from "./components/PageLoader.jsx";
 import { useRvStore } from "./stores/useRvStore.js";
 import Footer from "./components/Footer.jsx";
 import ProductPage from "./pages/ProductPage.jsx";
+import CartPage from "./pages/CartPage.jsx";
+import SellerDashboard from "./pages/seller/SellerDashboard.jsx"; // adjust path to match your folder structure
+import SellerRoute from "./components/SellerRoute.jsx";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -20,7 +23,7 @@ function App() {
   }, [checkAuth]);
 
   useEffect(() => {
-      getRecentlyViewed();
+    getRecentlyViewed();
   }, [getRecentlyViewed]);
 
   if (isCheckingAuth) return <PageLoader />;
@@ -30,7 +33,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<SearchPage />} />
-        <Route path="/product/:id" element={<ProductPage/>} />
+        <Route path="/product/:id" element={<ProductPage />} />
+        <Route path="/cart" element={<CartPage />} />
         <Route
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}
@@ -39,9 +43,17 @@ function App() {
           path="/signup"
           element={!authUser ? <SignupPage /> : <Navigate to="/" />}
         />
+        <Route
+          path="/seller/dashboard"
+          element={
+            <SellerRoute>
+              <SellerDashboard />
+            </SellerRoute>
+          }
+        />
       </Routes>
-      <Footer/>
 
+      <Footer />
       <Toaster />
     </>
   );
