@@ -7,9 +7,10 @@ import {
   LogOutIcon,
   SearchIcon,
   SettingsIcon,
+  Phone,
+  ShoppingCart,
+  PackageIcon,
 } from "lucide-react";
-import SupportPage from "../pages/SupportPage";
-import CartPage from "../pages/CartPage";
 import { useSearchStore } from "../stores/useSearchStore";
 
 const Navbar = () => {
@@ -48,11 +49,24 @@ const Navbar = () => {
       </div>
 
       {/* RIGHT SIDE */}
-      <div className="flex items-center gap-5">
-        <Link to="/supportpage">
-          <SupportPage />
-        </Link>
-        <Link to="/cart">CartPage</Link>
+      <div className="flex items-center gap-15">
+        <span className="flex items-center gap-5">
+          <Link to="/supportpage" aria-label="Support" className="p-2 rounded">
+            <Phone className="h-5 w-5 text-white  hover:scale-150 hover:rotate-10" />
+          </Link>
+          {authUser && (
+            <Link to="/orders" aria-label="My Orders" className="p-2 rounded">
+              <PackageIcon className="h-5 w-5 text-white hover:scale-150" />
+            </Link>
+          )}
+          <Link
+            to="/cart"
+            aria-label="Cart"
+            className="p-2 rounded hover:scale-150"
+          >
+            <ShoppingCart className="h-5 w-5 text-white" />
+          </Link>
+        </span>
 
         {/* AVATAR */}
         <div className="dropdown dropdown-end">

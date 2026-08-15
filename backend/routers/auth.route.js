@@ -1,6 +1,11 @@
 import express from "express";
-import { LoginMethod, SignupMethod } from "../controllers/auth.controller.js";
-import { protect} from "../middlewares/protected.middleware.js";
+import {
+  LoginMethod,
+  SignupMethod,
+  UpdateProfileMethod,
+  UpdatePasswordMethod,
+} from "../controllers/auth.controller.js";
+import { protect } from "../middlewares/protected.middleware.js";
 
 const Authrouter = express.Router();
 
@@ -22,5 +27,8 @@ Authrouter.post("/logout", (req, res) => {
 Authrouter.get("/me", protect, (req, res) => {
   res.status(200).json({ user: req.user });
 });
+
+Authrouter.put("/update-profile", protect, UpdateProfileMethod);
+Authrouter.put("/update-password", protect, UpdatePasswordMethod);
 
 export default Authrouter;

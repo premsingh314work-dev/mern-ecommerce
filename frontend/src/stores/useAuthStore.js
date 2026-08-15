@@ -6,6 +6,8 @@ export const useAuthStore = create((set, get) => ({
   isCheckingAuth: true,
   isSigningUp: false,
   isLoggingIn: false,
+  isUpdatingProfile: false,
+  isUpdatingPassword: false,
 
   checkAuth: async () => {
     try {
@@ -58,12 +60,45 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       const res = await axiosInstance.post("/auth/logout");
-      set({authUser:null});
+      set({ authUser: null });
       console.log(res);
-      
     } catch (err) {
       toast.error(err.response?.data?.message || "Logout failed");
       console.log("error: ", err.response?.data?.message);
+    }
+  },
+
+  // updates: { name?, phone?, avatar?, address? } — send only the fields that changed
+  updateProfile: async (updates) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-profile", updates);
+      set({ authUser: res.data.user });
+      toast.success(res.data.message || "Profile updated");
+      return res;
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update profile");
+      console.log("error: ", err.response?.data?.message);
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  },
+
+  updatePassword: async ({ currentPassword, newPassword }) => {
+    set({ isUpdatingPassword: true });
+    try {
+      const res = await axiosInstance.put("/auth/update-password", {
+        currentPassword,
+        newPassword,
+      });
+      toast.success(res.data.message || "Password updated");
+      return res;
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to update password");
+      console.log("error: ", err.response?.data?.message);
+      throw err;
+    } finally {
+      set({ isUpdatingPassword: false });
     }
   },
 }));

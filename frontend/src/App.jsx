@@ -14,6 +14,11 @@ import ProductPage from "./pages/ProductPage.jsx";
 import CartPage from "./pages/CartPage.jsx";
 import SellerDashboard from "./pages/seller/SellerDashboard.jsx"; // adjust path to match your folder structure
 import SellerRoute from "./components/SellerRoute.jsx";
+import CheckoutPage from "./pages/CheckoutPage.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
+import OrderConfirmationPage from "./pages/OrderConfirmationPage.jsx";
+import OrdersPage from "./pages/OrdersPage.jsx";
+import SupportPage from "./pages/SupportPage.jsx";
 
 function App() {
   const { checkAuth, authUser, isCheckingAuth } = useAuthStore();
@@ -35,6 +40,12 @@ function App() {
         <Route path="/products" element={<SearchPage />} />
         <Route path="/product/:id" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/checkout" element={<CheckoutPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
+        <Route path="/supportpage" element={<SupportPage />} />
+        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+        <Route path="/orders" element={<OrdersPage />} />
+
         <Route
           path="/login"
           element={!authUser ? <LoginPage /> : <Navigate to="/" />}

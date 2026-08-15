@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useCartStore } from "../stores/useCartStore";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const {
     items,
     isLoading,
@@ -189,7 +190,10 @@ const CartPage = () => {
                   </div>
 
                   {/* Checkout */}
-                  <button className="mt-6 w-full rounded-xl bg-black py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800">
+                  <button
+                    onClick={() => navigate("/checkout")}
+                    className="mt-6 w-full rounded-xl bg-black py-3.5 text-sm font-semibold text-white transition hover:bg-gray-800"
+                  >
                     Proceed to Checkout
                   </button>
 

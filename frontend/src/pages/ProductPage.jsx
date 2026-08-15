@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import { useSearchStore } from "../stores/useSearchStore";
 import { useCartStore } from "../stores/useCartStore";
@@ -27,6 +27,7 @@ const placeholderReviews = [
 
 const ProductPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { searchProductsById, singleProduct, isSearching } = useSearchStore();
   const { addToCart } = useCartStore();
   const [selectedImage, setSelectedImage] = useState(0);
@@ -60,6 +61,11 @@ const ProductPage = () => {
     addToCart(singleProduct, quantity);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1800);
+  };
+
+  const handleBuyNow = () => {
+    if (!singleProduct || singleProduct.stock <= 0) return;
+    navigate("/checkout", { state: { product: singleProduct, quantity } });
   };
 
   const reviews = useMemo(
@@ -251,7 +257,12 @@ const ProductPage = () => {
                         ? "Added ✓"
                         : "Add to Cart"}
                   </button>
-                  <button className="rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-900 transition hover:border-neutral-900 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900">
+                  <button
+                    type="button"
+                    onClick={handleBuyNow}
+                    disabled={singleProduct.stock <= 0}
+                    className="rounded-full border border-neutral-300 px-6 py-3 text-sm font-semibold text-neutral-900 transition hover:border-neutral-900 disabled:cursor-not-allowed disabled:opacity-50 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-neutral-900"
+                  >
                     Buy Now
                   </button>
                 </div>

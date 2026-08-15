@@ -1,45 +1,41 @@
 import express from "express";
 import cors from "cors";
 import Authrouter from "./routers/auth.route.js";
-import {connectDB} from './lib/db.js';
+import { connectDB } from "./lib/db.js";
 import dotenv from "dotenv";
-import cookieParser from 'cookie-parser';
+import cookieParser from "cookie-parser";
 import ProductRouter from "./routers/products.router.js";
 
 import CartRouter from "./routers/cart.route.js";
-import dns from 'node:dns/promises';
+import OrderRouter from "./routers/order.route.js";
+import dns from "node:dns/promises";
 
-dns.setServers(['8.8.8.8','1.1.1.1']);
-
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 
 dotenv.config();
 
-
 const PORT = process.env.PORT || 3000;
 const app = express();
-
 
 const isProduction = process.env.NODE_ENV === "production";
 
 app.use(
   cors({
-    origin: isProduction
-      ? process.env.FRONTEND_URL
-      : "http://localhost:5173",
+    origin: isProduction ? process.env.FRONTEND_URL : "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 app.use(cookieParser());
 app.use(express.json());
 
-app.use("/api/cart",CartRouter);
-app.use("/api/auth",Authrouter);
-app.use("/api/products",ProductRouter);
+app.use("/api/cart", CartRouter);
+app.use("/api/auth", Authrouter);
+app.use("/api/products", ProductRouter);
+app.use("/api/orders", OrderRouter);
 
-app.get('/',(req,res)=>{
-    res.send("Hi");
-})
-
+app.get("/", (req, res) => {
+  res.send("Hi");
+});
 
 const startServer = async () => {
   try {
@@ -54,7 +50,6 @@ const startServer = async () => {
 
 startServer();
 
-
-// git add .         
-// git commit -m "implemented jwt fully"     
+// git add .
+// git commit -m "implemented jwt fully"
 // git push origin main

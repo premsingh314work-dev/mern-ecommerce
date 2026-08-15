@@ -19,7 +19,7 @@ const NAV_ITEMS = [
 ];
 
 function SideBar({ Activeview, setActiveview }) {
-  const { logout } = useAuthStore();
+  const { logout, authUser } = useAuthStore();
   const navigate = useNavigate();
 
   const handleNav = (key) => {
@@ -39,6 +39,22 @@ function SideBar({ Activeview, setActiveview }) {
           Seller
         </p>
         <p className="mt-1 text-lg font-semibold text-neutral-900">Dashboard</p>
+
+        <div className="mt-4 flex items-center gap-3">
+          <img
+            src={authUser?.avatar || "/default-avatar.png"}
+            alt={authUser?.name || "Seller"}
+            className="h-9 w-9 rounded-full border border-neutral-200 object-cover"
+          />
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-neutral-900">
+              {authUser?.name || "Seller"}
+            </p>
+            <p className="truncate text-xs text-neutral-500">
+              {authUser?.email}
+            </p>
+          </div>
+        </div>
       </div>
 
       <nav className="flex-1 space-y-1 p-3">
